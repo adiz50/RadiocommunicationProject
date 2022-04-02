@@ -12,15 +12,16 @@ width = 4
 
 # x - distance from left wall to receiver
 def wall_once_reflected_path_length_and_angle(x):
-    if x > width / 2:
+    if x < width / 2:
         x = -x + width
-    a2_side = (length*width/2)/(x+width/2)
-    a1_side = length-a2_side
+    a2_side = ((length-0.5)*width/2)/(x+width/2)
+    a1_side = length-0.5-a2_side
     c1_side = math.sqrt(a1_side**2 + x**2)
     c2_side = math.sqrt(a2_side**2 + (width/2)**2)
 
     path = c1_side + c2_side
-    angle = math.asin(x/c1_side)
+    angle = math.degrees(math.asin(x/c1_side))
+
     return path, angle
 
 
