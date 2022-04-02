@@ -46,6 +46,16 @@ light = 3 * 10 ** 8
 fc = 2.4 * 10 ** 9
 lam = light / fc
 
+los = []
+wall = []
+ceiling = []
+PrP0_los = []
+PrP0_multipath = []
+current_angle = []
+angles_ceiling = []
+angles_wall = []
+
+x1 = np.linspace(0.0, 4.0, samples)
 
 def LOS_length(x):
     if (x > width / 2):
@@ -55,18 +65,37 @@ def LOS_length(x):
     return los
 
 
-x1 = np.linspace(0.0, 4.0, samples)
-# x2 = np.linspace(0.02, 2.0, num = 100)
-los = []
-PrP0_los = []
-PrP0_multipath = []
-current_angle = []
-angles_ceiling = []
-angles_wall = []
+def wall_once_reflected_path_length_and_angle(x):
+
+    if x < width / 2:
+        x = -x + width
+    a2_side = ((length-0.5)*width/2)/(x+width/2)
+    a1_side = length-0.5-a2_side
+    c1_side = math.sqrt(a1_side**2 + x**2)
+    c2_side = math.sqrt(a2_side**2 + (width/2)**2)
+
+    path = c1_side + c2_side
+    angle = math.degrees(math.asin(x/c1_side))
+
+    return path, angle
+
+def ceiling_once_reflected_path_length_and_angle(x):
+    los = LOS_length(x)
+    path = math.sqrt((height*2)**2+los**2)
+    angle = math.degrees(math.asin(height*2/path))
+
+    return path, angle
+
 for i in range(samples):
     los_left = LOS_length(x1[i])
     los.append(los_left)
-    # print(los_left)
+    multipath_wall, multipath_wall_angle = wall_once_reflected_path_length_and_angle(x1[i])
+    multipath_ceiling, multipath_ceiling_angle = ceiling_once_reflected_path_length_and_angle(x1[i])
+    wall.append(multipath_wall)
+    angles_wall.append(multipath_wall_angle)
+    ceiling.append(multipath_ceiling)
+    angles_ceiling.append(multipath_ceiling_angle)
+
 
 
 # for i in range(100):
@@ -91,6 +120,7 @@ def received_power_multipath1(path_los, path_wall, path_ceiling, array):
         P3 = (reflectance(angles_ceiling[x]) / path_ceiling[x]) * cmath.exp(pi * fi3 * 1j)  # Reflected path ceiling
         sum = abs(P1 + P2 + P3) ** 2
         array.append(sum)
+
     return array
 
 
@@ -104,7 +134,7 @@ def received_power_los(path, array):
 
 
 LOS_line = received_power_los(los, PrP0_los)
-multipath = received_power_multipath1(los, PrP0_multipath)
+multipath = received_power_multipath1(los, wall, ceiling, PrP0_multipath)
 
 # y is distance from the transmitter
 plt.plot(LOS_line, label="LOS line")
