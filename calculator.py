@@ -26,7 +26,6 @@ def wall_once_reflected_path_length_and_angle(x):
 
 def ceiling_once_reflected_path_length_and_angle(x):
     los = los_length(x)
-    c_side = math.sqrt(height+(los/2)**2)
     path = math.sqrt(5**2+los**2)
     angle = math.degrees(math.asin(height*2/path))
 
