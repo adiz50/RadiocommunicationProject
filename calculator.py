@@ -1,3 +1,4 @@
+import cmath
 import math
 
 import numpy as np
@@ -8,6 +9,9 @@ height = 2.5
 width = 4
 
 concrete = 5.31
+light = 3e8
+fc = 2.4e9
+lam = light / fc
 
 
 ###########
@@ -49,12 +53,29 @@ def los_length(x):
 
     return los
 
-def received_power_los(x):
 
-    fi = -1 * (2 * pi * fc * calc.los_length(x)) / light
-    P = 10 * math.log10(abs((1 / calc.los_length(x)) * cmath.exp(pi * fi * 1j)) ** 2)
+def received_power_los(x):
+    fi = -1 * (2 * math.pi * fc * los_length(x)) / light
+    P = 10 * math.log10(abs((1 / los_length(x)) * cmath.exp(math.pi * fi * 1j)) ** 2)
 
     return P
+
+
+def received_power_multipath1(x):
+    path_los = los_length(x)
+    path_wall, angles_wall = wall_once_reflected_path_length_and_angle(x)
+    path_ceiling, angles_ceiling = ceiling_once_reflected_path_length_and_angle(x)
+
+    fi1 = -1 * (2 * math.pi * fc * path_los) / light
+    fi2 = -1 * (2 * math.pi * fc * path_wall) / light
+    fi3 = -1 * (2 * math.pi * fc * path_ceiling) / light
+
+    P1 = (1 / path_los) * cmath.exp(math.pi * fi1 * 1j)  # LOS
+    P2 = (reflectance(angles_wall) / path_wall) * cmath.exp(math.pi * fi2 * 1j)  # Reflected path wall
+    P3 = (reflectance(angles_ceiling) / path_ceiling) * cmath.exp(math.pi * fi3 * 1j)  # Reflected path ceiling
+    sum = 10 * math.log10(abs(P1 + P2 + P3) ** 2)
+
+    return sum
 
 
 x = np.linspace(0.0, 4.0, 200)

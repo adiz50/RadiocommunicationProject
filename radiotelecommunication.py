@@ -77,27 +77,6 @@ for i in range(samples_init):
 #     return diff
 # TODO errory tu są
 
-def received_power_multipath1(path_los, path_wall, path_ceiling, array, samples):
-    for x in range(samples):
-        multipath_wall, multipath_wall_angle = calc.wall_once_reflected_path_length_and_angle(x1[i])
-        multipath_ceiling, multipath_ceiling_angle = calc.ceiling_once_reflected_path_length_and_angle(x1[i])
-        fi1 = -1 * (2 * pi * fc * path_los[x]) / light
-        fi2 = -1 * (2 * pi * fc * path_wall[x]) / light
-        fi3 = -1 * (2 * pi * fc * path_ceiling[x]) / light
-
-        P1 = (1 / path_los[x]) * cmath.exp(pi * fi1 * 1j)  # LOS
-        P2 = (calc.reflectance(angles_wall[x]) / path_wall[x]) * cmath.exp(pi * fi2 * 1j)  # Reflected path wall
-        P3 = (calc.reflectance(angles_ceiling[x]) / path_ceiling[x]) * cmath.exp(pi * fi3 * 1j)  # Reflected path ceiling
-        sum = 10 * math.log10(abs(P1 + P2 + P3) ** 2)
-        array.append(sum)
-    return array
-
-
-
-
-LOS_line = received_power_los(los, PrP0_los, samples_init)
-multipath = received_power_multipath1(los, wall, ceiling, PrP0_multipath, samples_init)
-
 plt.xlabel('Distance from the left wall [cm]')
 plt.ylabel('Pr/P0')
 # y is distance from the transmitter
