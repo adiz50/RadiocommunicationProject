@@ -53,6 +53,11 @@ angles_wall = []
 x1 = np.linspace(0.0, 4.0, samples_init)
 
 for i in range(samples_init):
+
+
+
+    LOS_line = calc.received_power_los(x1[i])
+
     los_left = calc.los_length(x1[i])
     los.append(los_left)
     multipath_wall, multipath_wall_angle = calc.wall_once_reflected_path_length_and_angle(x1[i])
@@ -95,7 +100,7 @@ def received_power_multipath1(path_los, path_wall, path_ceiling, array, samples)
 
 
 
-LOS_line = received_power_los(los, PrP0_los, samples_init)
+
 multipath = received_power_multipath1(los, wall, ceiling, PrP0_multipath, samples_init)
 
 plt.xlabel('Distance from the left wall [cm]')
