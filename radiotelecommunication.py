@@ -88,11 +88,6 @@ def received_power_multipath1(path_los, path_wall, path_ceiling, array, samples)
         P3 = (calc.reflectance(angles_ceiling[x]) / path_ceiling[x]) * cmath.exp(pi * fi3 * 1j)  # Reflected path ceiling
         sum = 10 * math.log10(abs(P1 + P2 + P3) ** 2)
         array.append(sum)
-        if x == 601:
-            print(sum)
-            print(calc.reflectance(angles_wall[x]), angles_wall[x])
-            print(calc.reflectance(angles_ceiling[x]), angles_ceiling[x])
-
     return array
 
 
