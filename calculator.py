@@ -7,7 +7,8 @@ import numpy as np
 length = 5
 height = 2.5
 width = 4
-
+additional_room_length = 2
+additional_room_width = 1.5
 concrete = 5.31
 light = 3e8
 fc = 2.4e9
@@ -26,7 +27,11 @@ def wall_once_reflected_path_length_and_angle(x):
     c2_side = math.sqrt(a2_side ** 2 + (width / 2) ** 2)
 
     path = c1_side + c2_side
+    if c1_side == 0:
+        c1_side = 0.0000001
+
     angle = math.asin(x / c1_side)
+
 
     return path, angle
 
@@ -78,10 +83,10 @@ def received_power_multipath1(x):
     return sum
 
 
-x = np.linspace(0.0, 4.0, 200)
+#x = np.linspace(0.0, 4.0, 200)
 
-for i in range(x.size):
-    print('x=' + str(x[i]))
-    print('LOS_path ' + str(los_length(x[i])))
-    print('Reflected path from wall ' + str(wall_once_reflected_path_length_and_angle(x[i])))
-    print('Reflected path from ceiling ' + str(ceiling_once_reflected_path_length_and_angle(x[i])) + "\n")
+#for i in range(x.size):
+#    print('x=' + str(x[i]))
+#    print('LOS_path ' + str(los_length(x[i])))
+#    print('Reflected path from wall ' + str(wall_once_reflected_path_length_and_angle(x[i])))
+#    print('Reflected path from ceiling ' + str(ceiling_once_reflected_path_length_and_angle(x[i])) + "\n")

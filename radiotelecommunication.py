@@ -41,27 +41,31 @@ light = 3e8
 fc = 2.4e9
 lam = light / fc
 
-los = []
-wall = []
-ceiling = []
-PrP0_los = []
-PrP0_multipath = []
-current_angle = []
-angles_ceiling = []
-angles_wall = []
+#los = []
+#wall = []
+#ceiling = []
+LOS_line = []
+multipath = []
+#current_angle = []
+#angles_ceiling = []
+#angles_wall = []
 
 x1 = np.linspace(0.0, 4.0, samples_init)
 
 for i in range(samples_init):
-    los_left = calc.los_length(x1[i])
-    los.append(los_left)
-    multipath_wall, multipath_wall_angle = calc.wall_once_reflected_path_length_and_angle(x1[i])
-    multipath_ceiling, multipath_ceiling_angle = calc.ceiling_once_reflected_path_length_and_angle(x1[i])
-    wall.append(multipath_wall)
-    angles_wall.append(multipath_wall_angle)
-    ceiling.append(multipath_ceiling)
-    angles_ceiling.append(multipath_ceiling_angle)
 
+
+    #los_left = calc.los_length(x1[i])
+    #los.append(los_left)
+    #multipath_wall, multipath_wall_angle = calc.wall_once_reflected_path_length_and_angle(x1[i])
+    #multipath_ceiling, multipath_ceiling_angle = calc.ceiling_once_reflected_path_length_and_angle(x1[i])
+    #wall.append(multipath_wall)
+    #angles_wall.append(multipath_wall_angle)
+    #ceiling.append(multipath_ceiling)
+    #angles_ceiling.append(multipath_ceiling_angle)
+
+    LOS_line.append(calc.received_power_los(x1[i]))
+    multipath.append(calc.received_power_multipath1(x1[i]))
 
 # for i in range(100):
 #    los_right = LOS_length(x2[i])
