@@ -46,6 +46,7 @@ lam = light / fc
 #ceiling = []
 LOS_line = []
 multipath = []
+diffracted_line = []
 #current_angle = []
 #angles_ceiling = []
 #angles_wall = []
@@ -64,9 +65,16 @@ for i in range(samples_init):
     #ceiling.append(multipath_ceiling)
     #angles_ceiling.append(multipath_ceiling_angle)
 
-    print(calc.is_it_diffraction(x1[i]))
+    #print(calc.is_it_diffraction(x1[i]))
     LOS_line.append(calc.received_power_los(x1[i]))
     multipath.append(calc.received_power_multipath1(x1[i]))
+    if calc.is_it_diffraction(x1[i]) == False:
+        diffracted_line.append(calc.received_power_los(x1[i]))
+    elif calc.is_it_diffraction(x1[i]) == True:
+        diffracted_line.append(calc.diffraction(x1[i]))
+
+
+
 
 # for i in range(100):
 #    los_right = LOS_length(x2[i])
@@ -87,6 +95,7 @@ plt.ylabel('Pr/P0')
 # y is distance from the transmitter
 plt.plot(LOS_line, label="LOS line")
 plt.plot(multipath, label="Multipath 1")
+plt.plot(diffracted_line, label="Diffracted line")
 
 plt.title('Multipath fading')
 # show a legend on the plot

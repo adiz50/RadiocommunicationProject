@@ -87,7 +87,7 @@ def diffraction(x):
         ((((width + additional_room_width) / samples) * x) - width) ** 2 + (additional_room_length - 0.5) ** 2)
     # HERON
     s = (r1 + r2 + los_length(x)) / 2
-    area_of_triangle = math.sqrt(s * (s - r1)(s - r2)(s - los_length(x)))
+    area_of_triangle = math.sqrt(s * (s - r1)*(s - r2)*(s - los_length(x)))
 
     h = (area_of_triangle * 2) / los_length(x)
 
