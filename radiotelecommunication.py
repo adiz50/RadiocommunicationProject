@@ -50,7 +50,7 @@ multipath = []
 #angles_ceiling = []
 #angles_wall = []
 
-x1 = np.linspace(0.0, 4.0, samples_init)
+x1 = np.linspace(0.0, calc.width + calc.additional_room_width, samples_init)
 
 for i in range(samples_init):
 
@@ -64,6 +64,7 @@ for i in range(samples_init):
     #ceiling.append(multipath_ceiling)
     #angles_ceiling.append(multipath_ceiling_angle)
 
+    print(calc.is_it_diffraction(x1[i]))
     LOS_line.append(calc.received_power_los(x1[i]))
     multipath.append(calc.received_power_multipath1(x1[i]))
 
