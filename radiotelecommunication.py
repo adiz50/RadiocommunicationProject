@@ -41,46 +41,15 @@ light = 3e8
 fc = 2.4e9
 lam = light / fc
 
-#los = []
-#wall = []
-#ceiling = []
 LOS_line = []
 multipath = []
-#current_angle = []
-#angles_ceiling = []
-#angles_wall = []
 
 x1 = np.linspace(0.0, calc.width + calc.additional_room_width, samples_init)
 
 for i in range(samples_init):
 
-
-    #los_left = calc.los_length(x1[i])
-    #los.append(los_left)
-    #multipath_wall, multipath_wall_angle = calc.wall_once_reflected_path_length_and_angle(x1[i])
-    #multipath_ceiling, multipath_ceiling_angle = calc.ceiling_once_reflected_path_length_and_angle(x1[i])
-    #wall.append(multipath_wall)
-    #angles_wall.append(multipath_wall_angle)
-    #ceiling.append(multipath_ceiling)
-    #angles_ceiling.append(multipath_ceiling_angle)
-
-    print(calc.is_it_diffraction(x1[i]))
     LOS_line.append(calc.received_power_los(x1[i]))
     multipath.append(calc.received_power_multipath1(x1[i]))
-
-# for i in range(100):
-#    los_right = LOS_length(x2[i])
-#    los.append(los_right)
-# print(los_right)
-
-
-# def diffraction():
-#
-#     v = h*math.sqrt((2/lam)*(s1+s2)/(r1*r2))
-#     diff = 6.9+20*math.log10(math.sqrt((v-0.1)**2+1)+v-0.1)
-#
-#     return diff
-# TODO errory tu są
 
 plt.xlabel('Distance from the left wall [cm]')
 plt.ylabel('Pr/P0')
