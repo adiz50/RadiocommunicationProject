@@ -13,6 +13,7 @@ concrete = 5.31
 light = 3e8
 fc = 2.4e9
 lam = light / fc
+samples = 200
 
 
 ###########
@@ -82,7 +83,21 @@ def received_power_multipath1(x):
 
     return sum
 
+def diffraction(x):
+    r1 = math.sqrt((width/2)**2+(length-additional_room_length)**2)
+    r2 = math.sqrt(((((width+additional_room_width)/samples)*x)-width)**2+(additional_room_length-0.5)**2)
+    #HERON
+    s = (r1+r2+los_length(x))/2
+    area_of_triangle = math.sqrt(s*(s-r1)(s-r2)(s-los_length(x)))
 
+    h = (area_of_triangle*2)/los_length(x)
+
+    v = h * math.sqrt((2 / lam) * (los_length(x)) / (r1 * r2))
+    diff = 6.9+20*math.log10(math.sqrt((v-0.1)**2+1)+v-0.1)
+
+    power = received_power_los(x)-diff
+
+    return power
 #x = np.linspace(0.0, 4.0, 200)
 
 #for i in range(x.size):
