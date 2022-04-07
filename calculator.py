@@ -49,6 +49,13 @@ def los_length(x):
 
     return los
 
+def received_power_los(x):
+
+    fi = -1 * (2 * pi * fc * calc.los_length(x)) / light
+    P = 10 * math.log10(abs((1 / calc.los_length(x)) * cmath.exp(pi * fi * 1j)) ** 2)
+
+    return P
+
 
 x = np.linspace(0.0, 4.0, 200)
 

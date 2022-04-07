@@ -79,6 +79,8 @@ for i in range(samples_init):
 
 def received_power_multipath1(path_los, path_wall, path_ceiling, array, samples):
     for x in range(samples):
+        multipath_wall, multipath_wall_angle = calc.wall_once_reflected_path_length_and_angle(x1[i])
+        multipath_ceiling, multipath_ceiling_angle = calc.ceiling_once_reflected_path_length_and_angle(x1[i])
         fi1 = -1 * (2 * pi * fc * path_los[x]) / light
         fi2 = -1 * (2 * pi * fc * path_wall[x]) / light
         fi3 = -1 * (2 * pi * fc * path_ceiling[x]) / light
@@ -91,12 +93,6 @@ def received_power_multipath1(path_los, path_wall, path_ceiling, array, samples)
     return array
 
 
-def received_power_los(path, array, samples):
-    for x in range(samples):
-        fi = -1 * (2 * pi * fc * path[x]) / light
-        P = 10 * math.log10(abs((1 / path[x]) * cmath.exp(pi * fi * 1j)) ** 2)
-        array.append(P)
-    return array
 
 
 LOS_line = received_power_los(los, PrP0_los, samples_init)
