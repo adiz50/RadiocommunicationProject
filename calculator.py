@@ -60,7 +60,7 @@ def los_length(x):
 def received_power_los(x):
     fi = -1 * (2 * math.pi * fc * los_length(x)) / light
     P = 10 * math.log10(abs((1 / los_length(x)) * cmath.exp(math.pi * fi * 1j)) ** 2)
-
+    #P1 = 50.11*(lam/4*math.pi*los_length(x))**2
     return P
 
 
