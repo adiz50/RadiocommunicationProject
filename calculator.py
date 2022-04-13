@@ -60,7 +60,7 @@ def los_length(x):
 def received_power_los(x):
     fi = -1 * (2 * math.pi * fc * los_length(x)) / light
     P = 10 * math.log10(abs((1 / los_length(x)) * cmath.exp(math.pi * fi * 1j)) ** 2)
-    #P1 = 50.11*(lam/4*math.pi*los_length(x))**2
+    # P1 = 50.11*(lam/4*math.pi*los_length(x))**2
     return P
 
 
@@ -87,7 +87,7 @@ def diffraction(x):
         ((((width + additional_room_width) / samples) * x) - width) ** 2 + (additional_room_length - 0.5) ** 2)
     # HERON
     s = (r1 + r2 + los_length(x)) / 2
-    area_of_triangle = math.sqrt(s * (s - r1)*(s - r2)*(s - los_length(x)))
+    area_of_triangle = math.sqrt(s * (s - r1) * (s - r2) * (s - los_length(x)))
 
     h = (area_of_triangle * 2) / los_length(x)
 
@@ -102,17 +102,23 @@ def diffraction(x):
 def is_it_diffraction(x):
     diffraction = bool(0)
 
-    actual_angle = math.degrees(math.asin((length-0.5)/los_length(x)))
-    side_a = math.sqrt((additional_room_length-0.5)**2+(x-width)**2)
-    angle =  math.degrees(math.asin((additional_room_length-0.5)/side_a))
+    actual_angle = math.degrees(math.asin((length - 0.5) / los_length(x)))
+    side_a = math.sqrt((additional_room_length - 0.5) ** 2 + (x - width) ** 2)
+    angle = math.degrees(math.asin((additional_room_length - 0.5) / side_a))
     if actual_angle > angle and x > width:
         diffraction = bool(1)
     return diffraction
 
-# x = np.linspace(0.0, 4.0, 200)
 
-# for i in range(x.size):
-#    print('x=' + str(x[i]))
-#    print('LOS_path ' + str(los_length(x[i])))
-#    print('Reflected path from wall ' + str(wall_once_reflected_path_length_and_angle(x[i])))
-#    print('Reflected path from ceiling ' + str(ceiling_once_reflected_path_length_and_angle(x[i])) + "\n")
+def wall_reflected_twice(x):
+    path = math.sqrt((width / 2 + width + x) ** 2 + length ** 2)
+    angle = math.degrees(math.atan((width / 2 + width + x) / length))
+
+    return path, angle
+
+
+def ceiling_reflected_twice(x):
+    path = math.sqrt((length / (length - 0.5) * los_length(x) + 0.5) ** 2 + (2 * height) ** 2)
+    angle = math.degrees(math.asin((2 * height) / path))
+
+    return path, angle

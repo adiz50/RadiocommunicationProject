@@ -68,9 +68,9 @@ for i in range(samples_init):
     #print(calc.is_it_diffraction(x1[i]))
     LOS_line.append(calc.received_power_los(x[i]))
     multipath.append(calc.received_power_multipath1(x[i]))
-    if calc.is_it_diffraction(x1[i]) == False:
+    if not calc.is_it_diffraction(x1[i]):
         diffracted_line.append(calc.received_power_los(x1[i]))
-    elif calc.is_it_diffraction(x1[i]) == True:
+    elif calc.is_it_diffraction(x1[i]):
         diffracted_line.append(calc.diffraction(x1[i]))
 
 
