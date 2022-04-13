@@ -8,6 +8,8 @@ width = 4
 additional_room_length = 2
 additional_room_width = 1.5
 concrete = 5.31
+wood = 1.99
+glass = 6.27
 light = 3e8
 fc = 2.4e9
 lam = light / fc
@@ -34,9 +36,9 @@ def wall_once_reflected_path_length_and_angle(x):
     return path, angle
 
 
-def reflectance(angle):
-    a = (math.cos(angle) - math.sqrt(concrete - math.sin(angle) ** 2)) / (
-            math.cos(angle) + math.sqrt(concrete - math.sin(angle) ** 2))
+def reflectance(angle, substance):
+    a = (math.cos(angle) - math.sqrt(substance - math.sin(angle) ** 2)) / (
+            math.cos(angle) + math.sqrt(substance - math.sin(angle) ** 2))
     return a
 
 
@@ -74,9 +76,27 @@ def received_power_multipath1(x):
     fi3 = -1 * (2 * math.pi * fc * path_ceiling) / light
 
     P1 = (1 / path_los) * cmath.exp(math.pi * fi1 * 1j)  # LOS
-    P2 = (reflectance(angles_wall) / path_wall) * cmath.exp(math.pi * fi2 * 1j)  # Reflected path wall
-    P3 = (reflectance(angles_ceiling) / path_ceiling) * cmath.exp(math.pi * fi3 * 1j)  # Reflected path ceiling
+    P2 = (reflectance(angles_wall, wood) / path_wall) * cmath.exp(math.pi * fi2 * 1j)  # Reflected path wall
+    P3 = (reflectance(angles_ceiling, concrete) / path_ceiling) * cmath.exp(math.pi * fi3 * 1j)  # Reflected path ceiling
     sum = 10 * math.log10(abs(P1 + P2 + P3) ** 2)
+
+    return sum
+
+def received_power_multipath2(x):
+    path_los = los_length(x)
+    path_wall, angles_wall = wall_reflected_twice(x)
+    path_ceiling, angles_ceiling = ceiling_reflected_twice(x)
+
+    fi1 = -1 * (2 * math.pi * fc * path_los) / light
+    fi2 = -1 * (2 * math.pi * fc * path_wall) / light
+    fi3 = -1 * (2 * math.pi * fc * path_ceiling) / light
+
+    P1 = (1 / path_los) * cmath.exp(math.pi * fi1 * 1j)  # LOS
+    P2 = (reflectance(angles_wall, wood)*reflectance(angles_wall, concrete) / path_wall) * cmath.exp(math.pi * fi2 * 1j)  # Reflected path wall
+    P3 = (reflectance(angles_ceiling, glass)*reflectance(angles_ceiling, concrete) / path_ceiling) * cmath.exp(math.pi * fi3 * 1j)  # Reflected path ceiling
+    sum = 10 * math.log10(abs(P1 + P2 + P3) ** 2)
+
+
 
     return sum
 

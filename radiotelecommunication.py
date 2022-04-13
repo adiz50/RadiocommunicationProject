@@ -45,7 +45,8 @@ lam = light / fc
 #wall = []
 #ceiling = []
 LOS_line = []
-multipath = []
+multipath1 = []
+multipath2 = []
 diffracted_line = []
 #current_angle = []
 #angles_ceiling = []
@@ -67,11 +68,17 @@ for i in range(samples_init):
 
     #print(calc.is_it_diffraction(x1[i]))
     LOS_line.append(calc.received_power_los(x[i]))
-    multipath.append(calc.received_power_multipath1(x[i]))
+    multipath1.append(calc.received_power_multipath1(x[i]))
+    multipath2.append(calc.received_power_multipath2(x[i]))
     if not calc.is_it_diffraction(x1[i]):
         diffracted_line.append(calc.received_power_los(x1[i]))
     elif calc.is_it_diffraction(x1[i]):
         diffracted_line.append(calc.diffraction(x1[i]))
+    #if i == 200:
+    #    print(calc.reflectance(calc.wall_reflected_twice(x[i])[1], calc.wood))
+    #    print(calc.reflectance(calc.wall_reflected_twice(x[i])[1], calc.concrete))
+    #    print(calc.reflectance(calc.wall_reflected_twice(x[i])[1], calc.glass))
+
 
 
 
@@ -94,7 +101,8 @@ plt.xlabel('Distance from the left wall [cm]')
 plt.ylabel('Pr/P0')
 # y is distance from the transmitter
 plt.plot(x*100,LOS_line, label="LOS line")
-plt.plot(x*100,multipath, label="Multipath 1")
+plt.plot(x*100,multipath1, label="Multipath 1")
+plt.plot(x*100,multipath2, label="Multipath 2")
 plt.plot(x1*100,diffracted_line, label="Diffracted line")
 
 plt.title('Multipath fading')
