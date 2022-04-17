@@ -143,3 +143,10 @@ def ceiling_reflected_twice(x):
 
     return path, angle
 
+
+#def pdp_power(x):
+
+
+
+
+
