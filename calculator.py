@@ -92,8 +92,8 @@ def received_power_multipath2(x):
     fi3 = -1 * (2 * math.pi * fc * path_ceiling) / light
 
     P1 = (1 / path_los) * cmath.exp(math.pi * fi1 * 1j)  # LOS
-    P2 = (reflectance(angles_wall, wood)*reflectance(angles_wall, concrete) / path_wall) * cmath.exp(math.pi * fi2 * 1j)  # Reflected path wall
-    P3 = (reflectance(angles_ceiling, glass)*reflectance(angles_ceiling, concrete) / path_ceiling) * cmath.exp(math.pi * fi3 * 1j)  # Reflected path ceiling
+    P2 = ((reflectance(angles_wall, wood)*reflectance(angles_wall, concrete)) / path_wall) * cmath.exp(math.pi * fi2 * 1j)  # Reflected path wall
+    P3 = ((reflectance(angles_ceiling, glass)*reflectance(angles_ceiling, concrete)) / path_ceiling) * cmath.exp(math.pi * fi3 * 1j)  # Reflected path ceiling
     sum = 10 * math.log10(abs(P1 + P2 + P3) ** 2)
 
 
@@ -132,13 +132,14 @@ def is_it_diffraction(x):
 
 def wall_reflected_twice(x):
     path = math.sqrt((width / 2 + width + x) ** 2 + length ** 2)
-    angle = math.degrees(math.atan((width / 2 + width + x) / length))
+    angle = math.atan((width / 2 + width + x) / length)
 
     return path, angle
 
 
 def ceiling_reflected_twice(x):
     path = math.sqrt((length / (length - 0.5) * los_length(x) + 0.5) ** 2 + (2 * height) ** 2)
-    angle = math.degrees(math.asin((2 * height) / path))
+    angle = math.asin((2 * height) / path)
 
     return path, angle
+
