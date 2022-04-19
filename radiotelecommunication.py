@@ -41,32 +41,16 @@ light = 3e8
 fc = 2.4e9
 lam = light / fc
 
-#los = []
-#wall = []
-#ceiling = []
 LOS_line = []
 multipath1 = []
 multipath2 = []
 diffracted_line = []
-#current_angle = []
-#angles_ceiling = []
-#angles_wall = []
-x = np.linspace(0.0, calc.width,samples_init)
+
+x = np.linspace(0.0, calc.width, samples_init)
 x1 = np.linspace(0.0, calc.width + calc.additional_room_width, samples_init)
 
 for i in range(samples_init):
 
-
-    #los_left = calc.los_length(x1[i])
-    #los.append(los_left)
-    #multipath_wall, multipath_wall_angle = calc.wall_once_reflected_path_length_and_angle(x1[i])
-    #multipath_ceiling, multipath_ceiling_angle = calc.ceiling_once_reflected_path_length_and_angle(x1[i])
-    #wall.append(multipath_wall)
-    #angles_wall.append(multipath_wall_angle)
-    #ceiling.append(multipath_ceiling)
-    #angles_ceiling.append(multipath_ceiling_angle)
-
-    #print(calc.is_it_diffraction(x1[i]))
     LOS_line.append(calc.received_power_los(x[i]))
     multipath1.append(calc.received_power_multipath1(x[i]))
     multipath2.append(calc.received_power_multipath2(x[i]))
@@ -74,36 +58,14 @@ for i in range(samples_init):
         diffracted_line.append(calc.received_power_los(x1[i]))
     elif calc.is_it_diffraction(x1[i]):
         diffracted_line.append(calc.diffraction(x1[i]))
-    #if i == 200:
-    #    print(calc.reflectance(calc.wall_reflected_twice(x[i])[1], calc.wood))
-    #    print(calc.reflectance(calc.wall_reflected_twice(x[i])[1], calc.concrete))
-    #    print(calc.reflectance(calc.wall_reflected_twice(x[i])[1], calc.glass))
-
-
-
-
-
-# for i in range(100):
-#    los_right = LOS_length(x2[i])
-#    los.append(los_right)
-# print(los_right)
-
-
-# def diffraction():
-#
-#     v = h*math.sqrt((2/lam)*(s1+s2)/(r1*r2))
-#     diff = 6.9+20*math.log10(math.sqrt((v-0.1)**2+1)+v-0.1)
-#
-#     return diff
-# TODO errory tu są
 
 plt.xlabel('Distance from the left wall [cm]')
 plt.ylabel('Pr/P0')
 # y is distance from the transmitter
-plt.plot(x*100,LOS_line, label="LOS line")
-plt.plot(x*100,multipath1, label="Multipath 1")
-plt.plot(x*100,multipath2, label="Multipath 2")
-plt.plot(x1*100,diffracted_line, label="Diffracted line")
+plt.plot(x * 100, LOS_line, label="LOS line")
+plt.plot(x * 100, multipath1, label="Multipath 1")
+plt.plot(x * 100, multipath2, label="Multipath 2")
+plt.plot(x1 * 100, diffracted_line, label="Diffracted line")
 
 plt.title('Multipath fading')
 # show a legend on the plot
