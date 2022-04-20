@@ -2,6 +2,7 @@ import calculator as calc
 import math
 import numpy as np
 from calculator import wood, glass, concrete
+from decimal import *
 import matplotlib.pyplot as plt
 
 length = 5
@@ -14,12 +15,12 @@ concrete = 5.31
 c = 3e8
 fc = 2.4e9
 lam = c / fc
-s_to_ns = 10e9
+s_to_ps = 10e12
 
 time_normalized = []
 power_normalized = []
 time_and_power_before_normalization = []
-x = np.linspace(0.0, calc.width, samples_init)
+x = np.linspace(0.0, calc.width/2, samples_init)
 
 for i in range(samples_init):
     path_wall_once, angles_wall_once = calc.wall_once_reflected_path_length_and_angle(x[i])
@@ -48,19 +49,26 @@ for i in range(samples_init):
 
     time_and_power_before_normalization.append([(path_ceiling_twice / c), P5])
 
+# print(len(time_and_power_before_normalization))
 time_and_power_before_normalization.sort(key=lambda x: x[0])
+# print(len(time_and_power_before_normalization))
+
 
 temporary_time_value = time_and_power_before_normalization[0][0]
 temporary_power_value = time_and_power_before_normalization[0][1]
+getcontext().prec = 15
 
 for n in range(samples_init):
-    print(time_and_power_before_normalization[n][0], " - ", temporary_time_value)
-    time_and_power_before_normalization[n][0] = (time_and_power_before_normalization[n][
-                                                     0] - temporary_time_value) * s_to_ns
+    #print(time_and_power_before_normalization[n][0], " - ", temporary_time_value)
+    #print(time_and_power_before_normalization[n][0],"-",temporary_time_value)
+    time_and_power_before_normalization[n][0] = ((Decimal(time_and_power_before_normalization[n][0] - temporary_time_value)*10**12))
+
     time_and_power_before_normalization[n][1] = (time_and_power_before_normalization[n][1] / temporary_power_value)
 
 print(np.matrix(time_and_power_before_normalization))
+
+
 # plt.xlabel("time delay [ns]")
 # plt.ylabel("normalized power")
-plt.plot(time_and_power_before_normalization)
-plt.show()
+#plt.plot(*zip(*time_and_power_before_normalization))
+#plt.show()
