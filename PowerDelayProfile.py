@@ -58,7 +58,7 @@ temporary_time_value = time_and_power_before_normalization[0][0]
 temporary_power_value = time_and_power_before_normalization[0][1]
 getcontext().prec = 15
 
-for n in range(samples_init):
+for n in range(len(time_and_power_before_normalization)):
     #print(time_and_power_before_normalization[n][0], " - ", temporary_time_value)
     #print(time_and_power_before_normalization[n][0],"-",temporary_time_value)
     time_and_power_before_normalization[n][0] = ((Decimal(time_and_power_before_normalization[n][0] - temporary_time_value)*10**12))
@@ -70,5 +70,5 @@ print(np.matrix(time_and_power_before_normalization))
 
 # plt.xlabel("time delay [ns]")
 # plt.ylabel("normalized power")
-#plt.plot(*zip(*time_and_power_before_normalization))
-#plt.show()
+plt.plot(*zip(*time_and_power_before_normalization))
+plt.show()
