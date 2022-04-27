@@ -5,8 +5,9 @@ import math
 length = 5
 height = 2.5
 width = 4
+tx_rx_height = 1
 additional_room_length = 2
-additional_room_width = 1.5
+additional_room_width = 3
 concrete = 5.31
 wood = 1.99
 glass = 6.27
@@ -44,8 +45,8 @@ def reflectance(angle, substance):
 
 def ceiling_once_reflected_path_length_and_angle(x):
     los = los_length(x)
-    path = math.sqrt((height * 2) ** 2 + los ** 2)
-    angle = math.asin(height * 2 / path)
+    path = math.sqrt(((height-tx_rx_height) * 2) ** 2 + los ** 2)
+    angle = math.asin((height-tx_rx_height) * 2 / path)
 
     return path, angle
 
@@ -114,9 +115,9 @@ def diffraction(x):
     v = h * math.sqrt((2 / lam) * (los_length(x)) / (r1 * r2))
     diff = 6.9 + 20 * math.log10(math.sqrt((v - 0.1) ** 2 + 1) + v - 0.1)
 
-    power = received_power_los(x) - diff
+    #power = received_power_los(x) - diff
 
-    return power
+    return diff
 
 
 def is_it_diffraction(x):
@@ -138,10 +139,11 @@ def wall_reflected_twice(x):
 
 
 def ceiling_reflected_twice(x):
-    path = math.sqrt((length / (length - 0.5) * los_length(x) + 0.5) ** 2 + (2 * height) ** 2)
-    angle = math.asin((2 * height) / path)
+    path = math.sqrt((length / (length - 0.5) * los_length(x) + 0.5) ** 2 + (2 * (height-tx_rx_height)) ** 2)
+    angle = math.asin((2 * (height-tx_rx_height)) / path)
 
     return path, angle
+
 
 
 #def pdp_power(x):
