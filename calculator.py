@@ -85,6 +85,10 @@ def received_power_multipath1(x):
 
 def received_power_multipath2(x):
     path_los = los_length(x)
+
+    path_wall_once, angles_wall_once = wall_once_reflected_path_length_and_angle(x)
+    path_ceiling_once, angles_ceiling_once = ceiling_once_reflected_path_length_and_angle(x)
+
     path_wall, angles_wall = wall_reflected_twice(x)
     path_ceiling, angles_ceiling = ceiling_reflected_twice(x)
 
@@ -93,9 +97,11 @@ def received_power_multipath2(x):
     fi3 = -1 * (2 * math.pi * fc * path_ceiling) / light
 
     P1 = (1 / path_los) * cmath.exp(math.pi * fi1 * 1j)  # LOS
-    P2 = ((reflectance(angles_wall, wood)*reflectance(angles_wall, concrete)) / path_wall) * cmath.exp(math.pi * fi2 * 1j)  # Reflected path wall
-    P3 = ((reflectance(angles_ceiling, glass)*reflectance(angles_ceiling, concrete)) / path_ceiling) * cmath.exp(math.pi * fi3 * 1j)  # Reflected path ceiling
-    sum = 10 * math.log10(abs(P1 + P2 + P3) ** 2)
+    P2 = (reflectance(angles_wall_once, wood) / path_wall_once) * cmath.exp(math.pi * fi2 * 1j)  # Reflected path wall
+    P3 = (reflectance(angles_ceiling_once, concrete) / path_ceiling_once) * cmath.exp(math.pi * fi3 * 1j)  # Reflected path ceiling
+    P4 = ((reflectance(angles_wall, wood)*reflectance(angles_wall, concrete)) / path_wall) * cmath.exp(math.pi * fi2 * 1j)  # Reflected path wall
+    P5 = ((reflectance(angles_ceiling, glass)*reflectance(angles_ceiling, concrete)) / path_ceiling) * cmath.exp(math.pi * fi3 * 1j)  # Reflected path ceiling
+    sum = 10 * math.log10(abs(P1 + P2 + P3 + P4 + P5) ** 2)
 
 
 
@@ -104,20 +110,22 @@ def received_power_multipath2(x):
 
 def diffraction(x):
     r1 = math.sqrt((width / 2) ** 2 + (length - additional_room_length) ** 2)
-    r2 = math.sqrt(
-        ((((width + additional_room_width) / samples) * x) - width) ** 2 + (additional_room_length - 0.5) ** 2)
+    #r2 = math.sqrt(
+    #    ((((width + additional_room_width) / samples) * x) - width) ** 2 + (additional_room_length - 0.5) ** 2)
+    r2 = math.sqrt((x-width)**2+(additional_room_length-0.5)**2)
     # HERON
     s = (r1 + r2 + los_length(x)) / 2
     area_of_triangle = math.sqrt(s * (s - r1) * (s - r2) * (s - los_length(x)))
 
     h = (area_of_triangle * 2) / los_length(x)
-
+    #print("h: ",h)
+    #print(r2)
     v = h * math.sqrt((2 / lam) * (los_length(x)) / (r1 * r2))
-    diff = 6.9 + 20 * math.log10(math.sqrt((v - 0.1) ** 2 + 1) + v - 0.1)
+    diff = 6.9 + 20 * math.log10(math.sqrt(((v - 0.1) ** 2) + 1) + v - 0.1)
+    #print(diff)
+    power = received_power_los(x) - diff
 
-    #power = received_power_los(x) - diff
-
-    return diff
+    return power
 
 
 def is_it_diffraction(x):
@@ -141,7 +149,7 @@ def wall_reflected_twice(x):
 def ceiling_reflected_twice(x):
     path = math.sqrt((length / (length - 0.5) * los_length(x) + 0.5) ** 2 + (2 * (height-tx_rx_height)) ** 2)
     angle = math.asin((2 * (height-tx_rx_height)) / path)
-
+    #print(angle)
     return path, angle
 
 
