@@ -75,7 +75,6 @@ def power_delay_profile(x):
     return time_and_power_before_normalization
 
 
-#fig = plt.figure()
 
 
 plt.bar(*zip(*power_delay_profile(d)), width = 0.2)
