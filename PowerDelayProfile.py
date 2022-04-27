@@ -1,3 +1,4 @@
+import math
 from decimal import *
 import matplotlib
 import matplotlib.pyplot as plt
@@ -20,13 +21,13 @@ fc = 2.4e9
 lam = c / fc
 s_to_ps = 10e9
 #select position between 0 and 4 that indicates your place in the room
-d = 0.5
+d = 1
 time_normalized = []
 power_normalized = []
 time_and_power_before_normalization = []
-
-
-
+# time_avg_squared = []
+# values= []
+# #time_avg = []
 
 def power_delay_profile(x):
     path_wall_once, angles_wall_once = calc.wall_once_reflected_path_length_and_angle(x)
@@ -70,13 +71,21 @@ def power_delay_profile(x):
 
         time_and_power_before_normalization[n][1] = (time_and_power_before_normalization[n][1] / temporary_power_value)
 
-        # print(np.matrix(time_and_power_before_normalization))
+        print(np.matrix(time_and_power_before_normalization))
 
     return time_and_power_before_normalization
 
-
-
-
+# for n in range(len(time_and_power_before_normalization)):
+#
+#     time_avg.append(time_and_power_before_normalization[n][0]*time_and_power_before_normalization[n][1])
+#
+#     values.append(time_and_power_before_normalization[n][1])
+#
+#     time_avg_squared.append((time_and_power_before_normalization[n][0]**2) * time_and_power_before_normalization[n][1])
+#
+#print(np.matrix(time_and_power_before_normalization))
+# tau_rms = math.sqrt((sum(time_avg_squared)/sum(values)-(sum(time_avg)/sum(values)**2)))
+# print(tau_rms)
 plt.bar(*zip(*power_delay_profile(d)), width = 0.2)
 plt.title("Power delay profile "+str(d)+"m from the left wall")
 plt.xlabel("Time delay [ns]")

@@ -59,7 +59,7 @@ for i in range(samples_init):
         LOS_line.append(calc.received_power_los(x1[i]))
         multipath1.append(calc.received_power_multipath1(x1[i]))
         multipath2.append(calc.received_power_multipath2(x1[i]))
-        #diffracted_line.append(0)
+        #diffracted_line.append(None)
     elif calc.is_it_diffraction(x1[i]):
         diffracted_line.append(calc.diffraction(x1[i]))
         LOS_line.append(None)
@@ -68,6 +68,8 @@ for i in range(samples_init):
 
 plt.xlabel('Distance from the left wall [cm]')
 plt.ylabel('Pr/P0 [dB]')
+#plt.xlabel('Distance from the left wall [cm]')
+#plt.ylabel('Attenuation [dB]')
 # y is distance from the transmitter
 plt.plot(x1 * 100, LOS_line, label="LOS line")
 plt.plot(x1 * 100, multipath1, label="Multipath 1")

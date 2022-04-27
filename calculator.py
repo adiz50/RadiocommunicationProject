@@ -93,14 +93,16 @@ def received_power_multipath2(x):
     path_ceiling, angles_ceiling = ceiling_reflected_twice(x)
 
     fi1 = -1 * (2 * math.pi * fc * path_los) / light
-    fi2 = -1 * (2 * math.pi * fc * path_wall) / light
-    fi3 = -1 * (2 * math.pi * fc * path_ceiling) / light
+    fi2 = -1 * (2 * math.pi * fc * path_wall_once) / light
+    fi3 = -1 * (2 * math.pi * fc * path_ceiling_once) / light
+    fi4 = -1 * (2 * math.pi * fc * path_wall) / light
+    fi5 = -1 * (2 * math.pi * fc * path_ceiling) / light
 
     P1 = (1 / path_los) * cmath.exp(math.pi * fi1 * 1j)  # LOS
     P2 = (reflectance(angles_wall_once, wood) / path_wall_once) * cmath.exp(math.pi * fi2 * 1j)  # Reflected path wall
     P3 = (reflectance(angles_ceiling_once, concrete) / path_ceiling_once) * cmath.exp(math.pi * fi3 * 1j)  # Reflected path ceiling
-    P4 = ((reflectance(angles_wall, wood)*reflectance(angles_wall, concrete)) / path_wall) * cmath.exp(math.pi * fi2 * 1j)  # Reflected path wall
-    P5 = ((reflectance(angles_ceiling, glass)*reflectance(angles_ceiling, concrete)) / path_ceiling) * cmath.exp(math.pi * fi3 * 1j)  # Reflected path ceiling
+    P4 = ((reflectance(angles_wall, wood)*reflectance(angles_wall, concrete)) / path_wall) * cmath.exp(math.pi * fi4 * 1j)  # Reflected path wall
+    P5 = ((reflectance(angles_ceiling, glass)*reflectance(angles_ceiling, concrete)) / path_ceiling) * cmath.exp(math.pi * fi5 * 1j)  # Reflected path ceiling
     sum = 10 * math.log10(abs(P1 + P2 + P3 + P4 + P5) ** 2)
 
 
